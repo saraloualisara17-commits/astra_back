@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  Phone, 
-  Package, 
-  Calendar, 
-  RefreshCw, 
-  XCircle, 
-  Loader2, 
+import {
+  Phone,
+  Package,
+  Calendar,
+  RefreshCw,
+  XCircle,
+  Loader2,
   AlertCircle,
   MapPin,
   Image as ImageIcon,
@@ -20,20 +20,20 @@ import { selectLoading } from '../../store/livreur/livreurSelectors';
 // ─── Sub-Components ───────────────────
 
 const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
-  const baseUrl = "http://localhost:8080";
-  
+  const baseUrl = import.meta.env.VITE_API_URL// 'http://localhost:8080';
+
   const getMainImage = (order) => {
     // Check all possible field names for carpet list
-    const tapis = order.commandeTapis 
-                  || order.tapis 
-                  || order.articles 
-                  || order.carpets 
-                  || []
-                  
+    const tapis = order.commandeTapis
+      || order.tapis
+      || order.articles
+      || order.carpets
+      || []
+
     for (const t of tapis) {
       // Check all possible field names for images
       const imgs = t.tapisImages || t.images || t.photos || []
-      
+
       if (Array.isArray(imgs)) {
         const principal = imgs.find(i => i.isPrincipal);
         if (principal) {
@@ -56,7 +56,7 @@ const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
 
   return (
     <div className="bg-white rounded-2xl md:rounded-3xl shadow-card hover:shadow-card-hover transition-all border border-border/50 overflow-hidden flex flex-col md:flex-row group mb-3 md:mb-0">
-      
+
       {/* MOBILE HEADER (Top section) - Visible only on mobile */}
       <div className="md:hidden bg-red-50 px-4 py-3 flex items-center justify-between border-b border-red-100">
         <span className="text-xs font-bold text-red-600 font-mono">
@@ -71,9 +71,9 @@ const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
       {/* TABLET+ IMAGE SECTION (Left) - Hidden on mobile by md:block */}
       <div className="hidden md:block w-32 md:w-48 relative overflow-hidden shrink-0 bg-red-50">
         {mainImage ? (
-          <img 
-            src={mainImage} 
-            alt="Tapis" 
+          <img
+            src={mainImage}
+            alt="Tapis"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-90"
             onError={(e) => {
               e.target.style.display = 'none';
@@ -105,10 +105,10 @@ const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
             </div>
           </div>
           <div className="hidden sm:flex flex-col items-end shrink-0">
-             <span className="text-[10px] font-bold text-text-muted uppercase mb-1">Status Actuel</span>
-             <div className="flex items-center gap-2 bg-red-50 px-2 py-1 rounded-lg border border-red-100">
-               <span className="text-[10px] font-bold text-red-600 uppercase">A Retourner</span>
-             </div>
+            <span className="text-[10px] font-bold text-text-muted uppercase mb-1">Status Actuel</span>
+            <div className="flex items-center gap-2 bg-red-50 px-2 py-1 rounded-lg border border-red-100">
+              <span className="text-[10px] font-bold text-red-600 uppercase">A Retourner</span>
+            </div>
           </div>
         </div>
 
@@ -127,10 +127,10 @@ const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
 
         <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
           <div className="flex items-center gap-2 text-text-secondary">
-             <Calendar size={14} />
-             <span className="text-xs font-bold">{new Date(order.dateCreation || order.createdAt).toLocaleDateString('fr-FR')}</span>
+            <Calendar size={14} />
+            <span className="text-xs font-bold">{new Date(order.dateCreation || order.createdAt).toLocaleDateString('fr-FR')}</span>
           </div>
-          <button 
+          <button
             onClick={() => onReturn(order.id)}
             disabled={isProcessing}
             className="px-6 py-2.5 bg-primary-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 disabled:opacity-50 transition-all flex items-center gap-2 group/btn active:scale-95"
@@ -141,48 +141,48 @@ const HorizontalCanceledCard = ({ order, onReturn, isProcessing }) => {
         </div>
       </div>
 
-  {/* MOBILE CONTENT SECTION - Visible only on mobile */}
-  <div className="md:hidden">
-    {/* Middle section: client + info */}
-    <div className="px-5 py-4">
-      <div className="flex justify-between items-start mb-3">
-         <div>
-            <p className="text-base font-black text-text-primary uppercase tracking-tight">
-              {order.client?.nom || order.client?.name || 'Client'}
-            </p>
-            <div className="flex items-center gap-1.5 mt-1 text-text-muted">
-               <Calendar size={12} />
-               <span className="text-[10px] font-bold uppercase tracking-widest">
+      {/* MOBILE CONTENT SECTION - Visible only on mobile */}
+      <div className="md:hidden">
+        {/* Middle section: client + info */}
+        <div className="px-5 py-4">
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <p className="text-base font-black text-text-primary uppercase tracking-tight">
+                {order.client?.nom || order.client?.name || 'Client'}
+              </p>
+              <div className="flex items-center gap-1.5 mt-1 text-text-muted">
+                <Calendar size={12} />
+                <span className="text-[10px] font-bold uppercase tracking-widest">
                   Annulée le {new Date(order.dateCreation || order.createdAt).toLocaleDateString('fr-FR')}
-               </span>
+                </span>
+              </div>
             </div>
-         </div>
-         <div className="bg-gray-100 px-2 py-1 rounded-lg border border-border/50">
-            <span className="text-[10px] font-black text-text-secondary uppercase tracking-tighter">
-              {order.commandeTapis?.length || 0} Tapis
-            </span>
-         </div>
-      </div>
+            <div className="bg-gray-100 px-2 py-1 rounded-lg border border-border/50">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-tighter">
+                {order.commandeTapis?.length || 0} Tapis
+              </span>
+            </div>
+          </div>
 
-      <div className="bg-gray-50 p-3 rounded-xl mb-4 border border-gray-100">
-         <div className="flex items-start gap-2 text-text-muted">
-            <MapPin size={14} className="mt-0.5 shrink-0" />
-            <span className="text-xs font-medium leading-relaxed">
-               {order.client?.adresse || order.client?.addresses?.[0]?.address || 'Pas d\'adresse'}
-            </span>
-         </div>
-      </div>
+          <div className="bg-gray-50 p-3 rounded-xl mb-4 border border-gray-100">
+            <div className="flex items-start gap-2 text-text-muted">
+              <MapPin size={14} className="mt-0.5 shrink-0" />
+              <span className="text-xs font-medium leading-relaxed">
+                {order.client?.adresse || order.client?.addresses?.[0]?.address || 'Pas d\'adresse'}
+              </span>
+            </div>
+          </div>
 
-      <button
-        onClick={() => onReturn(order.id || order.commandeId)}
-        disabled={isProcessing}
-        className="w-full bg-primary-500 hover:bg-primary-600 text-white rounded-2xl py-4 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 transition-all shadow-lg shadow-primary-500/20 active:scale-95 disabled:opacity-50"
-      >
-        {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <RotateCcw size={18} strokeWidth={3} />}
-        Valider le retour à l&apos;atelier
-      </button>
-    </div>
-  </div>
+          <button
+            onClick={() => onReturn(order.id || order.commandeId)}
+            disabled={isProcessing}
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white rounded-2xl py-4 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 transition-all shadow-lg shadow-primary-500/20 active:scale-95 disabled:opacity-50"
+          >
+            {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <RotateCcw size={18} strokeWidth={3} />}
+            Valider le retour à l&apos;atelier
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -207,7 +207,7 @@ export default function CanceledDeliveries() {
   }, [dispatch]);
 
   const filteredOrders = useMemo(() => {
-    return orders.filter(order => 
+    return orders.filter(order =>
       order.client?.nom?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.client?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.numeroCommande.toString().includes(searchQuery)
@@ -229,7 +229,7 @@ export default function CanceledDeliveries() {
 
   return (
     <div className="animate-fade-in space-y-8 pb-32 px-4 md:px-0">
-      
+
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
@@ -247,15 +247,15 @@ export default function CanceledDeliveries() {
         <div className="flex items-center gap-3">
           <div className="relative group w-full sm:w-72">
             <ArrowRight className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary-500 transition-colors" size={18} />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Rechercher une annulation..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white border border-border rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:border-primary-500 outline-none transition-all shadow-sm"
             />
           </div>
-          <button 
+          <button
             onClick={fetchOrders}
             className="p-3.5 bg-white border border-border rounded-2xl hover:bg-gray-50 transition-colors shadow-sm active:scale-95"
           >
@@ -285,9 +285,9 @@ export default function CanceledDeliveries() {
           ))
         ) : filteredOrders.length > 0 ? (
           filteredOrders.map(order => (
-            <HorizontalCanceledCard 
-              key={order.id} 
-              order={order} 
+            <HorizontalCanceledCard
+              key={order.id}
+              order={order}
               onReturn={handleReturn}
               isProcessing={processingId === order.id}
             />

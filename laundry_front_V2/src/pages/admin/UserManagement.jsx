@@ -9,7 +9,8 @@ import {
   UserPlus, Edit2, Shield, Power, Search, Users,
   ChevronRight, Lock, Loader2, Trash2, Mail,
   Phone, Briefcase, RefreshCw, X, Check,
-  ChevronLeft, SlidersHorizontal, UserCheck, UserX
+  ChevronLeft, SlidersHorizontal, UserCheck, UserX,
+  AlertCircle
 } from 'lucide-react';
 import { clearError, clearSuccess } from '../../store/admin/adminSlice';
 import ConfirmModal from '../../components/ui/ConfirmModal';

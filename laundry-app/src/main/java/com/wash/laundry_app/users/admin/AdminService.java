@@ -32,12 +32,12 @@ public class AdminService {
 
     @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<UserDto> createUser(UserRegisterRequest request, UriComponentsBuilder uriBuilder){
-        if (userRepository.existsByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new InvalidCredentialsException("Cet email est d\u00e9j\u00e0 utilis\u00e9.");
         }
         var user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.livreur);
+        user.setRole(request.getRole());
         userRepository.save(user);
         var userDto = userMapper.toDto(user);
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();

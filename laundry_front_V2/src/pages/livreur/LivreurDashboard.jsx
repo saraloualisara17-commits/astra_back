@@ -8,7 +8,8 @@ import {
   Navigation2, 
   MoreHorizontal,
   LayoutDashboard,
-  ChevronRight
+  ChevronRight,
+  MapPin
 } from 'lucide-react';
 import { 
   fetchLivreurDashboardStats, 

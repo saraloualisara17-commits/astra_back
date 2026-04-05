@@ -370,7 +370,7 @@ export default function RegisterClient() {
              </button>
           </div>
 
-          <div className="md:hidden fixed bottom-[64px] left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-border/60 z-[90] shadow-[0_-10px_25px_rgba(0,0,0,0.05)]">
+          <div className="md:hidden fixed bottom-[64px] pb-safe left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-border/60 z-[110] shadow-[0_-10px_25px_rgba(0,0,0,0.05)]">
              <button
                onClick={handleSubmit}
                disabled={loading.createClient}

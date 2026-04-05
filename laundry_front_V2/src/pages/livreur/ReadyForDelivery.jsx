@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  MapPin, 
-  Package, 
-  Phone, 
-  Navigation, 
-  CreditCard, 
+import {
+  MapPin,
+  Package,
+  Phone,
+  Navigation,
+  CreditCard,
   Image as ImageIcon,
   Loader2,
   X,
@@ -22,14 +22,14 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { 
-  fetchReadyForDelivery, 
+import {
+  fetchReadyForDelivery,
   confirmPayment,
   fetchPaymentTypes,
   cancelDelivery
 } from '../../store/livreur/livreurThunk';
-import { 
-  selectReadyForDelivery, 
+import {
+  selectReadyForDelivery,
   selectLoading,
   selectPaymentTypes
 } from '../../store/livreur/livreurSelectors';
@@ -67,7 +67,7 @@ const orangeIcon = new L.Icon({
 });
 
 // Numbered icon for optimized route
-const createNumberedIcon = (number) => 
+const createNumberedIcon = (number) =>
   new L.DivIcon({
     html: `
       <div style="
@@ -101,7 +101,7 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, order, paymentTypes, loading
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300" onClick={onClose}></div>
-      
+
       <div className="relative bg-white w-full max-w-sm rounded-t-[2rem] sm:rounded-2xl shadow-modal overflow-hidden animate-in slide-in-from-bottom duration-300 p-6">
         <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5 sm:hidden"></div>
 
@@ -123,11 +123,10 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, order, paymentTypes, loading
               <div
                 key={type.id}
                 onClick={() => setSelectedType(type.id)}
-                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
-                  isSelected 
-                    ? 'border-2 border-primary-500 bg-primary-50' 
+                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${isSelected
+                    ? 'border-2 border-primary-500 bg-primary-50'
                     : 'border-border hover:border-primary-300 hover:bg-primary-50'
-                }`}
+                  }`}
               >
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-primary-500' : 'border-gray-300'}`}>
                   {isSelected && <div className="w-2.5 h-2.5 bg-primary-500 rounded-full"></div>}
@@ -151,8 +150,8 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, order, paymentTypes, loading
 };
 
 const DeliveryCard = ({ order, onPay, onCancel, onShowGallery, isOptimized }) => {
-  const baseUrl = "http://localhost:8080";
-  
+  const baseUrl = import.meta.env.VITE_API_URL// 'http://localhost:8080';
+
   const getAllPhotos = (order) => {
     const photos = [];
     const tapisList = order.commandeTapis || [];
@@ -190,7 +189,7 @@ const DeliveryCard = ({ order, onPay, onCancel, onShowGallery, isOptimized }) =>
     const lat = order.client?.addresses?.[0]?.latitude;
     const lng = order.client?.addresses?.[0]?.longitude;
     const address = order.client?.addresses?.[0]?.address;
-    
+
     if (lat && lng) {
       window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
     } else if (address) {
@@ -202,31 +201,31 @@ const DeliveryCard = ({ order, onPay, onCancel, onShowGallery, isOptimized }) =>
 
   return (
     <div className="relative bg-white rounded-2xl shadow-md overflow-hidden flex flex-col md:flex-row border border-border/40 animate-in slide-in-from-bottom duration-500 group">
-      
+
       {/* STOP NUMBER BADGE */}
       {isOptimized && order._stopNumber && (
         <div className="absolute top-3 left-3 z-20 w-8 h-8 rounded-full bg-primary-500 text-white text-xs font-black flex items-center justify-center shadow-lg border-2 border-white">
-           {order._stopNumber}
+          {order._stopNumber}
         </div>
       )}
 
       {/* LEFT IMAGE SECTION */}
       <div className="w-full md:w-44 h-48 md:h-auto shrink-0 relative bg-gray-50 overflow-hidden">
         {mainPhoto ? (
-          <img 
-            src={mainPhoto} 
+          <img
+            src={mainPhoto}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 cursor-pointer"
             alt="tapis"
             onClick={() => onShowGallery(allPhotos, 0)}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-primary-400">
-             <Package size={48} strokeWidth={1.5} />
+            <Package size={48} strokeWidth={1.5} />
           </div>
         )}
-        
+
         <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-white text-[10px] font-black uppercase tracking-widest border border-white/20">
-           {order.montantTotal} DH
+          {order.montantTotal} DH
         </div>
       </div>
 
@@ -235,60 +234,60 @@ const DeliveryCard = ({ order, onPay, onCancel, onShowGallery, isOptimized }) =>
         <div>
           <div className="flex justify-between items-start gap-3 mb-3">
             <div className="min-w-0">
-               <h3 className="text-base font-black text-text-primary tracking-tight truncate uppercase">#{order.numeroCommande} • {order.client?.nom || 'Client'}</h3>
-               <div className="flex items-center gap-2 mt-1">
-                  <span className="bg-green-100 text-green-700 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest border border-green-200">
-                    PRÊT
-                  </span>
-                  <div className="flex items-center gap-1 text-text-muted">
-                    <Clock size={12} />
-                    <span className="text-[9px] font-bold uppercase tracking-widest">{timeAgo}</span>
-                  </div>
-               </div>
+              <h3 className="text-base font-black text-text-primary tracking-tight truncate uppercase">#{order.numeroCommande} • {order.client?.nom || order.client?.name || order.client?.fullName || 'Client'}</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="bg-green-100 text-green-700 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest border border-green-200">
+                  PRÊT
+                </span>
+                <div className="flex items-center gap-1 text-text-muted">
+                  <Clock size={12} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest">{timeAgo}</span>
+                </div>
+              </div>
             </div>
             {order._legDistance && (
-               <div className="flex flex-col items-end gap-1 shrink-0">
-                 <div className="flex items-center gap-1 px-2 py-1 bg-primary-50 rounded-lg border border-primary-100">
-                   <Navigation size={10} className="text-primary-500" />
-                   <span className="text-[9px] font-black text-primary-600 uppercase tracking-widest">{order._legDistance} KM</span>
-                 </div>
-               </div>
+              <div className="flex flex-col items-end gap-1 shrink-0">
+                <div className="flex items-center gap-1 px-2 py-1 bg-primary-50 rounded-lg border border-primary-100">
+                  <Navigation size={10} className="text-primary-500" />
+                  <span className="text-[9px] font-black text-primary-600 uppercase tracking-widest">{order._legDistance} KM</span>
+                </div>
+              </div>
             )}
           </div>
 
           <div className="bg-gray-50/50 p-3 rounded-xl mb-4 border border-gray-100">
-              <div className="flex items-start gap-2.5 mb-2">
-                <MapPin size={14} className="text-primary-500 mt-0.5 shrink-0" />
-                <p className="text-xs font-bold text-text-primary leading-relaxed uppercase tracking-tight line-clamp-2">{order.client?.addresses?.[0]?.address || 'Sans adresse'}</p>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone size={14} className="text-primary-500 shrink-0" />
-                <a href={`tel:${order.client?.phones?.[0]?.phoneNumber}`} className="text-xs font-black text-primary-600 hover:text-primary-700 transition-colors uppercase tracking-wider">
-                  {order.client?.phones?.[0]?.phoneNumber || 'Sans numéro'}
-                </a>
-              </div>
+            <div className="flex items-start gap-2.5 mb-2">
+              <MapPin size={14} className="text-primary-500 mt-0.5 shrink-0" />
+              <p className="text-xs font-bold text-text-primary leading-relaxed uppercase tracking-tight line-clamp-2">{order.client?.addresses?.[0]?.address || 'Sans adresse'}</p>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Phone size={14} className="text-primary-500 shrink-0" />
+              <a href={`tel:${order.client?.phones?.[0]?.phoneNumber}`} className="text-xs font-black text-primary-600 hover:text-primary-700 transition-colors uppercase tracking-wider">
+                {order.client?.phones?.[0]?.phoneNumber || 'Sans numéro'}
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="flex gap-2 items-center">
-           <button 
-             onClick={handleItinerary}
-             className="flex-1 bg-primary-500 hover:bg-primary-600 text-white rounded-xl py-3.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-md shadow-primary-500/10 active:scale-95"
-           >
-              <Navigation size={14} fill="white" /> Itinéraire
-           </button>
-           <button 
-             onClick={() => onPay(order)}
-             className="flex-1 bg-white hover:bg-gray-50 text-text-primary border border-border rounded-xl py-3.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95"
-           >
-              <CreditCard size={14} /> Paiement
-           </button>
-           <button 
-             onClick={() => onCancel(order)}
-             className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-text-muted hover:bg-red-50 hover:text-red-500 transition-all border border-border/50 active:scale-95 shrink-0"
-           >
-              <X size={20} />
-           </button>
+          <button
+            onClick={handleItinerary}
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white rounded-xl py-3.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-md shadow-primary-500/10 active:scale-95"
+          >
+            <Navigation size={14} fill="white" /> Itinéraire
+          </button>
+          <button
+            onClick={() => onPay(order)}
+            className="flex-1 bg-white hover:bg-gray-50 text-text-primary border border-border rounded-xl py-3.5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95"
+          >
+            <CreditCard size={14} /> Paiement
+          </button>
+          <button
+            onClick={() => onCancel(order)}
+            className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-text-muted hover:bg-red-50 hover:text-red-500 transition-all border border-border/50 active:scale-95 shrink-0"
+          >
+            <X size={20} />
+          </button>
         </div>
       </div>
     </div>
@@ -299,13 +298,13 @@ const DeliveryCard = ({ order, onPay, onCancel, onShowGallery, isOptimized }) =>
 
 export default function ReadyForDelivery() {
   const dispatch = useDispatch();
-  
+
   const orders = useSelector(selectReadyForDelivery);
   const paymentTypes = useSelector(selectPaymentTypes);
   const loading = useSelector(selectLoading);
 
   const [paymentModal, setPaymentModal] = useState({ isOpen: false, order: null });
-  
+
   // Lightbox State
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState([]);
@@ -319,7 +318,7 @@ export default function ReadyForDelivery() {
   const [totalDistance, setTotalDistance] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [optimized, setOptimized] = useState(false);
-  
+
   const [noGpsWarning, setNoGpsWarning] = useState(false);
   const [mapReady, setMapReady] = useState(false);
 
@@ -374,7 +373,7 @@ export default function ReadyForDelivery() {
       // The order is determined by data.trips[0].legs and the sequences.
       // Correct reordering for Trip API:
       const trip = data.trips[0];
-      const itemsOrder = data.waypoints.sort((a,b) => a.trips_index - b.trips_index).map(wp => wp.waypoint_index);
+      const itemsOrder = data.waypoints.sort((a, b) => a.trips_index - b.trips_index).map(wp => wp.waypoint_index);
       const reorderedOrders = itemsOrder.map(idx => ordersWithGPS[idx]);
 
       const legs = trip.legs;
@@ -439,9 +438,9 @@ export default function ReadyForDelivery() {
   const handleConfirmPayment = async (methodId) => {
     if (!paymentModal.order) return;
     try {
-      await dispatch(confirmPayment({ 
-        orderId: paymentModal.order.id, 
-        data: { modePaiement: methodId } 
+      await dispatch(confirmPayment({
+        orderId: paymentModal.order.id,
+        data: { modePaiement: methodId }
       })).unwrap();
       toast.success("Paiement validé !");
       setPaymentModal({ isOpen: false, order: null });
@@ -462,10 +461,10 @@ export default function ReadyForDelivery() {
     try {
       const orderId = orderToCancel.id;
       await dispatch(cancelDelivery(orderId)).unwrap();
-      
+
       // Refresh the orders list
       dispatch(fetchReadyForDelivery());
-      
+
       setCancelModalOpen(false);
       setOrderToCancel(null);
       setSuccessMessage('Commande annulée avec succès. Elle apparaît dans "Annulées".');
@@ -493,7 +492,7 @@ export default function ReadyForDelivery() {
       setTimeout(() => setNoGpsWarning(false), 4000);
       return;
     }
-    
+
     if (markers.length === 1) {
       window.open(`https://www.google.com/maps?q=${markers[0].client.addresses[0].latitude},${markers[0].client.addresses[0].longitude}`, '_blank');
       return;
@@ -503,18 +502,18 @@ export default function ReadyForDelivery() {
     const dest = markers[markers.length - 1];
     const stops = markers.slice(1, -1);
     const waypointsParam = stops.map(o => `${o.client.addresses[0].latitude},${o.client.addresses[0].longitude}`).join('|');
-    
-    const url = waypointsParam 
+
+    const url = waypointsParam
       ? `https://www.google.com/maps/dir/${origin.client.addresses[0].latitude},${origin.client.addresses[0].longitude}/${waypointsParam}/${dest.client.addresses[0].latitude},${dest.client.addresses[0].longitude}`
       : `https://www.google.com/maps/dir/${origin.client.addresses[0].latitude},${origin.client.addresses[0].longitude}/${dest.client.addresses[0].latitude},${dest.client.addresses[0].longitude}`;
-    
+
     window.open(url, '_blank');
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-32 animate-fade-in px-4 overflow-x-hidden">
       <style>{leafletStyles}</style>
-      
+
       {/* SUCCESS/ERROR BANNERS */}
       {successMessage && (
         <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-2xl px-4 py-3 shadow-sm animate-in slide-in-from-top duration-300">
@@ -536,12 +535,12 @@ export default function ReadyForDelivery() {
           <h1 className="text-2xl font-black text-text-primary tracking-tight uppercase">Livraisons du jour</h1>
           <p className="text-sm text-text-muted mt-1 font-bold">Optimisez votre trajet et gérez vos encaissements.</p>
         </div>
-        
+
         <div className="bg-primary-50 border border-primary-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm shrink-0">
-           <ShoppingBag className="text-primary-500" size={20} />
-           <p className="text-sm font-black text-primary-600 uppercase tracking-widest leading-none">
-              {orders.length} Commandes
-           </p>
+          <ShoppingBag className="text-primary-500" size={20} />
+          <p className="text-sm font-black text-primary-600 uppercase tracking-widest leading-none">
+            {orders.length} Commandes
+          </p>
         </div>
       </div>
 
@@ -557,15 +556,15 @@ export default function ReadyForDelivery() {
         {optimized && !isOptimizing && (
           <div className="flex items-center gap-4 flex-wrap bg-white border border-border/50 rounded-2xl px-4 py-3 shadow-sm">
             <div className="flex items-center gap-1.5 bg-green-50 border border-green-200 rounded-xl px-3 py-1.5">
-              <CheckCircle className="w-4 h-4 text-green-500"/>
+              <CheckCircle className="w-4 h-4 text-green-500" />
               <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">Optimisé</span>
             </div>
             <div className="flex items-center gap-1.5 bg-primary-50 border border-primary-200 rounded-xl px-3 py-1.5">
-              <MapPin className="w-4 h-4 text-primary-500"/>
+              <MapPin className="w-4 h-4 text-primary-500" />
               <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest">{totalDistance} KM</span>
             </div>
             <div className="flex items-center gap-1.5 bg-primary-50 border border-primary-200 rounded-xl px-3 py-1.5">
-              <Clock className="w-4 h-4 text-primary-500"/>
+              <Clock className="w-4 h-4 text-primary-500" />
               <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest">~{totalDuration} MIN</span>
             </div>
             <button
@@ -583,7 +582,7 @@ export default function ReadyForDelivery() {
 
         {optimizationError && (
           <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 shadow-sm">
-            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0"/>
+            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0" />
             <span className="text-xs font-bold text-amber-800 uppercase tracking-tight">{optimizationError}</span>
           </div>
         )}
@@ -591,96 +590,96 @@ export default function ReadyForDelivery() {
 
       {/* MAP SECTION */}
       <div className="bg-white rounded-2xl shadow-card overflow-hidden mb-6 w-full max-w-full border border-border/50">
-         <div className="h-48 sm:h-56 md:h-64 lg:h-72 w-full relative overflow-hidden z-0">
-            {mapReady && (
-               <MapContainer
-                  center={mapCenter}
-                  zoom={mapMarkers.length > 0 ? 12 : 10}
-                  style={{ height: '100%', width: '100%', zIndex: 0 }}
-                  zoomControl={true}
-                  scrollWheelZoom={false}
-               >
-                  <TileLayer
-                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  
-                  {routeCoords.length > 0 && (
-                     <Polyline
-                        positions={routeCoords}
-                        color="#F97316"
-                        weight={4}
-                        opacity={0.8}
-                     />
-                  )}
-
-                  {mapMarkers.map((marker, idx) => (
-                     <Marker
-                        key={idx}
-                        position={[marker.lat, marker.lng]}
-                        icon={optimized ? createNumberedIcon(marker.stopNumber) : orangeIcon}
-                     >
-                        <Popup>
-                           <div style={{minWidth: '160px'}}>
-                              <div style={{fontWeight: 900, fontSize: '13px', marginBottom: '4px', textTransform: 'uppercase', color: '#111827'}}>
-                                 {optimized ? `Arrêt ${marker.stopNumber}: ` : ''}{marker.clientName}
-                              </div>
-                              <div style={{fontSize: '11px', color: '#6B7280', marginBottom: '6px', fontWeight: 600}}>
-                                 {marker.address}
-                              </div>
-                              <div className="flex justify-between items-center border-t border-gray-100 pt-2">
-                                 <div style={{fontSize: '12px', color: '#F97316', fontWeight: 900}}>
-                                    {marker.amount} DH
-                                 </div>
-                                 <div style={{fontSize: '10px', color: '#9CA3AF', fontWeight: 700}}>
-                                    #{marker.orderId}
-                                 </div>
-                              </div>
-                           </div>
-                        </Popup>
-                     </Marker>
-                  ))}
-               </MapContainer>
-            )}
-
-            {mapMarkers.length === 0 && (
-               <div className="absolute inset-0 z-[10] flex flex-col items-center justify-center bg-gray-50/90 backdrop-blur-md">
-                  <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4">
-                     <MapPin size={32} className="text-gray-300" />
-                  </div>
-                  <p className="text-sm font-black text-text-primary uppercase tracking-tight">Aucune coordonnée GPS</p>
-                  <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mt-1">L'optimisation nécessite les positions clients</p>
-               </div>
-            )}
-         </div>
-
-         {/* SmartRoute banner */}
-         <div className="bg-gray-900 px-4 py-3 md:px-5 md:py-4 flex justify-between items-center gap-3">
-            <div>
-               <h4 className="font-semibold text-sm md:text-base text-white leading-tight uppercase">Lancer la Livraison</h4>
-               <p className="text-gray-400 text-xs mt-0.5 hidden sm:block font-bold">
-                  {mapMarkers.length > 0
-                     ? `Ouvrir l'itinéraire pour ${mapMarkers.length} clients`
-                     : 'Gagnez du temps sur votre tournée'
-                  }
-               </p>
-            </div>
-            <button
-               className="bg-primary-500 text-white rounded-xl px-3 py-2 md:px-4 text-xs md:text-sm font-semibold whitespace-nowrap flex-shrink-0"
-               onClick={handleSmartRoute}
+        <div className="h-48 sm:h-56 md:h-64 lg:h-72 w-full relative overflow-hidden z-0">
+          {mapReady && (
+            <MapContainer
+              center={mapCenter}
+              zoom={mapMarkers.length > 0 ? 12 : 10}
+              style={{ height: '100%', width: '100%', zIndex: 0 }}
+              zoomControl={true}
+              scrollWheelZoom={false}
             >
-               Google Maps
-            </button>
-         </div>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+
+              {routeCoords.length > 0 && (
+                <Polyline
+                  positions={routeCoords}
+                  color="#F97316"
+                  weight={4}
+                  opacity={0.8}
+                />
+              )}
+
+              {mapMarkers.map((marker, idx) => (
+                <Marker
+                  key={idx}
+                  position={[marker.lat, marker.lng]}
+                  icon={optimized ? createNumberedIcon(marker.stopNumber) : orangeIcon}
+                >
+                  <Popup>
+                    <div style={{ minWidth: '160px' }}>
+                      <div style={{ fontWeight: 900, fontSize: '13px', marginBottom: '4px', textTransform: 'uppercase', color: '#111827' }}>
+                        {optimized ? `Arrêt ${marker.stopNumber}: ` : ''}{marker.clientName}
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#6B7280', marginBottom: '6px', fontWeight: 600 }}>
+                        {marker.address}
+                      </div>
+                      <div className="flex justify-between items-center border-t border-gray-100 pt-2">
+                        <div style={{ fontSize: '12px', color: '#F97316', fontWeight: 900 }}>
+                          {marker.amount} DH
+                        </div>
+                        <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 700 }}>
+                          #{marker.orderId}
+                        </div>
+                      </div>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          )}
+
+          {mapMarkers.length === 0 && (
+            <div className="absolute inset-0 z-[10] flex flex-col items-center justify-center bg-gray-50/90 backdrop-blur-md">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4">
+                <MapPin size={32} className="text-gray-300" />
+              </div>
+              <p className="text-sm font-black text-text-primary uppercase tracking-tight">Aucune coordonnée GPS</p>
+              <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mt-1">L'optimisation nécessite les positions clients</p>
+            </div>
+          )}
+        </div>
+
+        {/* SmartRoute banner */}
+        <div className="bg-gray-900 px-4 py-3 md:px-5 md:py-4 flex justify-between items-center gap-3">
+          <div>
+            <h4 className="font-semibold text-sm md:text-base text-white leading-tight uppercase">Lancer la Livraison</h4>
+            <p className="text-gray-400 text-xs mt-0.5 hidden sm:block font-bold">
+              {mapMarkers.length > 0
+                ? `Ouvrir l'itinéraire pour ${mapMarkers.length} clients`
+                : 'Gagnez du temps sur votre tournée'
+              }
+            </p>
+          </div>
+          <button
+            className="bg-primary-500 text-white rounded-xl px-3 py-2 md:px-4 text-xs md:text-sm font-semibold whitespace-nowrap flex-shrink-0"
+            onClick={handleSmartRoute}
+          >
+            Google Maps
+          </button>
+        </div>
       </div>
 
       {/* ORDERS LIST */}
       <div className="space-y-4">
         {displayOrders.length > 0 ? (
           displayOrders.map(order => (
-            <DeliveryCard 
-              key={order.id} 
-              order={order} 
+            <DeliveryCard
+              key={order.id}
+              order={order}
               onPay={handleOpenPayment}
               onCancel={handleCancelOrder}
               onShowGallery={handleShowGallery}
@@ -690,7 +689,7 @@ export default function ReadyForDelivery() {
         ) : (
           <div className="py-24 flex flex-col items-center justify-center bg-white rounded-[3rem] border-2 border-dashed border-border/50">
             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 shadow-inner">
-               <Navigation size={40} className="text-text-muted opacity-20" />
+              <Navigation size={40} className="text-text-muted opacity-20" />
             </div>
             <h3 className="text-xl font-black text-text-primary uppercase tracking-tight">Aucune livraison en attente</h3>
             <p className="text-sm font-bold text-text-muted mt-2 uppercase tracking-widest text-center px-8">Toutes vos livraisons ont été effectuées pour le moment.</p>
@@ -699,7 +698,7 @@ export default function ReadyForDelivery() {
       </div>
 
       {/* MODALS */}
-      <PaymentModal 
+      <PaymentModal
         isOpen={paymentModal.isOpen}
         order={paymentModal.order}
         paymentTypes={paymentTypes}
@@ -710,7 +709,7 @@ export default function ReadyForDelivery() {
 
       {/* CANCEL MODAL */}
       {cancelModalOpen && orderToCancel && (
-        <div 
+        <div
           className="fixed inset-0 z-[110] flex items-center justify-center p-4 animate-in fade-in duration-300"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -720,21 +719,21 @@ export default function ReadyForDelivery() {
           }}
         >
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-          
+
           <div className="relative bg-white rounded-3xl shadow-modal max-w-sm w-full p-8 animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-6">
-               <AlertCircle size={32} className="text-red-500" />
+              <AlertCircle size={32} className="text-red-500" />
             </div>
-            
+
             <h3 className="text-xl font-black text-text-primary text-center mb-2 uppercase tracking-tight">Annuler la livraison ?</h3>
-            
+
             <p className="text-sm text-text-muted text-center mb-1 font-bold uppercase tracking-widest text-[10px]">
               Commande <span className="text-red-500">#{orderToCancel.numeroCommande || orderToCancel.id}</span>
             </p>
             <p className="text-xs text-text-muted text-center mb-8 font-medium">
               Cette action marquera la commande comme annulée. Elle apparaîtra dans la section "Annulées".
             </p>
-            
+
             <div className="flex gap-4">
               <button
                 className="flex-1 bg-gray-100 hover:bg-gray-200 text-text-primary rounded-2xl py-4 text-xs font-black uppercase tracking-widest transition-all active:scale-95"
@@ -763,7 +762,7 @@ export default function ReadyForDelivery() {
       )}
 
       {lightboxOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[120] bg-black/95 flex flex-col items-center justify-center p-4 animate-in fade-in duration-300"
           onClick={(e) => {
             if (e.target === e.currentTarget) setLightboxOpen(false);
@@ -810,9 +809,9 @@ export default function ReadyForDelivery() {
                 key={idx}
                 src={img}
                 className={`w-14 h-14 rounded-xl object-cover cursor-pointer border-2 transition-all shadow-lg
-                           ${idx === lightboxIndex 
-                             ? 'border-primary-500 scale-110' 
-                             : 'border-transparent opacity-50 hover:opacity-100'}`}
+                           ${idx === lightboxIndex
+                    ? 'border-primary-500 scale-110'
+                    : 'border-transparent opacity-50 hover:opacity-100'}`}
                 onClick={() => setLightboxIndex(idx)}
                 alt={`thumb ${idx + 1}`}
               />

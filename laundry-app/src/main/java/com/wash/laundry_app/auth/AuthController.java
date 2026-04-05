@@ -1,5 +1,7 @@
 package com.wash.laundry_app.auth;
 
+import com.wash.laundry_app.users.Role;
+import com.wash.laundry_app.users.User;
 import com.wash.laundry_app.users.UserMapper;
 import com.wash.laundry_app.users.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -12,8 +14,10 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -26,6 +30,7 @@ public class AuthController {
     private final JwtConfig jwtConfig;
     private final AuthService authService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> Login(@Valid @RequestBody LoginRequest request , HttpServletResponse response){

@@ -11,10 +11,10 @@ import { clearSelectedCommande } from '../../store/admin/adminSlice';
 import { StatusBadge } from '../../components/StatusBadge';
 
 const ETAT_CONFIG = {
-  en_attente:   { label: 'En Attente',  accentText: 'text-orange-500', accentBg: 'bg-orange-50' },
-  en_nettoyage: { label: 'Nettoyage',   accentText: 'text-blue-500',   accentBg: 'bg-blue-50' },
-  nettoye:      { label: 'Nettoyé',     accentText: 'text-green-500',  accentBg: 'bg-green-50' },
-  livre:        { label: 'Livré',       accentText: 'text-teal-500',   accentBg: 'bg-teal-50' },
+  en_attente: { label: 'En Attente', accentText: 'text-orange-500', accentBg: 'bg-orange-50' },
+  en_nettoyage: { label: 'Nettoyage', accentText: 'text-blue-500', accentBg: 'bg-blue-50' },
+  nettoye: { label: 'Nettoyé', accentText: 'text-green-500', accentBg: 'bg-green-50' },
+  livre: { label: 'Livré', accentText: 'text-teal-500', accentBg: 'bg-teal-50' },
 };
 
 export default function AdminCommandeDetail() {
@@ -60,16 +60,16 @@ export default function AdminCommandeDetail() {
           <div>
             <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-2 px-1">Référence Commande</p>
             <div className="flex items-center gap-3">
-               <p className="text-xl font-black text-text-primary tracking-tight">#{commande.numeroCommande}</p>
-               <StatusBadge status={commande.status} size="sm" />
+              <p className="text-xl font-black text-text-primary tracking-tight">#{commande.numeroCommande}</p>
+              <StatusBadge status={commande.status} size="sm" />
             </div>
           </div>
           {commande.montantTotal != null && (
             <div className="text-right">
               <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-1">Encaissement</p>
               <div className="bg-primary-50 px-3 py-1.5 rounded-xl border border-primary-100 flex items-baseline gap-1">
-                 <span className="text-xl font-black text-primary-600 tracking-tight">{commande.montantTotal}</span>
-                 <span className="text-[10px] font-black text-primary-400 uppercase">DH</span>
+                <span className="text-xl font-black text-primary-600 tracking-tight">{commande.montantTotal}</span>
+                <span className="text-[10px] font-black text-primary-400 uppercase">DH</span>
               </div>
             </div>
           )}
@@ -90,10 +90,10 @@ export default function AdminCommandeDetail() {
               <div key={i} className="bg-gray-50/50 rounded-2xl p-3 border border-gray-100 flex flex-col gap-1.5">
                 <p className="text-[8px] font-black text-text-muted uppercase tracking-[0.2em]">{row.label}</p>
                 <div className="flex items-center gap-2">
-                   <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${row.color}`}>
-                      <Icon size={12} strokeWidth={2.5} />
-                   </div>
-                   <p className="text-[11px] font-black text-text-primary truncate">{row.value}</p>
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${row.color}`}>
+                    <Icon size={12} strokeWidth={2.5} />
+                  </div>
+                  <p className="text-[11px] font-black text-text-primary truncate">{row.value}</p>
                 </div>
               </div>
             );
@@ -119,8 +119,8 @@ export default function AdminCommandeDetail() {
             {tapis.map((t, i) => {
               const etatCfg = ETAT_CONFIG[t.etat] || ETAT_CONFIG.en_attente;
               const tapisInfo = t.tapis || {};
-              
-              const baseUrl = "http://localhost:8080";
+
+              const baseUrl = import.meta.env.VITE_API_URL;
 
               const getFullUrl = (img) => {
                 const url = img?.imageUrl || img?.url || (typeof img === 'string' ? img : null);
@@ -184,7 +184,7 @@ export default function AdminCommandeDetail() {
                           </div>
                         ) : (
                           <div className="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center">
-                            <ImageIcon className="w-6 h-6 text-gray-300"/>
+                            <ImageIcon className="w-6 h-6 text-gray-300" />
                           </div>
                         )}
                       </div>
@@ -257,7 +257,7 @@ export default function AdminCommandeDetail() {
               className="absolute left-4 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center"
               onClick={() => setLightboxIndex(i => i - 1)}
             >
-              <ChevronLeft className="w-6 h-6 text-white"/>
+              <ChevronLeft className="w-6 h-6 text-white" />
             </button>
           )}
 
@@ -272,7 +272,7 @@ export default function AdminCommandeDetail() {
               className="absolute right-4 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center"
               onClick={() => setLightboxIndex(i => i + 1)}
             >
-              <ChevronRight className="w-6 h-6 text-white"/>
+              <ChevronRight className="w-6 h-6 text-white" />
             </button>
           )}
 
@@ -281,9 +281,8 @@ export default function AdminCommandeDetail() {
               <img
                 key={idx}
                 src={img}
-                className={`w-12 h-12 rounded-lg object-cover cursor-pointer border-2 ${
-                  idx === lightboxIndex ? 'border-white opacity-100' : 'border-transparent opacity-50'
-                }`}
+                className={`w-12 h-12 rounded-lg object-cover cursor-pointer border-2 ${idx === lightboxIndex ? 'border-white opacity-100' : 'border-transparent opacity-50'
+                  }`}
                 onClick={() => setLightboxIndex(idx)}
                 alt="thumb"
               />

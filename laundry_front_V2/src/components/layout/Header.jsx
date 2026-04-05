@@ -223,7 +223,7 @@ const Header = () => {
 
           {/* Notification Dropdown */}
           {isNotificationsOpen && (
-            <div className="absolute right-0 mt-3 w-80 md:w-96 bg-surface rounded-2xl shadow-modal border border-border overflow-hidden z-50 animate-fade-in origin-top-right">
+            <div className="absolute z-50 bg-surface rounded-2xl shadow-modal border border-border left-1/2 -translate-x-1/2 w-[90vw] top-12 md:left-auto md:right-0 md:translate-x-0 md:w-80 md:top-10 max-h-[80vh] overflow-y-auto animate-fade-in origin-top-right">
               <div className="px-5 py-4 border-b border-border flex items-center justify-between bg-surface">
                 <div>
                   <h3 className="text-sm font-bold text-text-primary">Notifications</h3>
@@ -242,7 +242,7 @@ const Header = () => {
                 )}
               </div>
 
-              <div className="max-h-[400px] overflow-y-auto">
+              <div className="max-h-[70vh] overflow-y-auto md:max-h-96">
                 {notifications.length > 0 ? (
                   notifications.map((order) => {
                     const isNew = !seenIds.includes(order.id);

@@ -249,8 +249,8 @@ export default function EmployeDashboard() {
               </div>
             ) : (
               <>
-                {/* Desktop: table */}
-                <div className="hidden lg:block overflow-x-auto">
+                {/* Scrollable Table for all breakpoints */}
+                <div className="w-full overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="bg-gray-50/50 border-b border-border/50">
@@ -308,52 +308,7 @@ export default function EmployeDashboard() {
                       })}
                     </tbody>
                   </table>
-                               {/* Mobile: cards */}
-                <div className="lg:hidden divide-y divide-border/30">
-                  {filteredOrders.map(order => {
-                    const isOverdue = isPastUnfinished(order);
-                    const cfg = STATUS_CONFIG[order.status?.toUpperCase()] || STATUS_CONFIG[COMMANDE_STATUS.EN_ATTENTE];
-                    return (
-                      <div 
-                        key={order.id} 
-                        onClick={() => navigate(`/employe/commandes/${order.id}`)}
-                        className={`p-5 flex items-center justify-between hover:bg-gray-50/60 active:bg-gray-100/60 transition-all ${isOverdue ? 'border-l-4 border-l-red-500 bg-red-50/20' : ''}`}
-                      >
-                        <div className="flex items-center gap-4 min-w-0">
-                           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm border ${isOverdue ? 'bg-white text-red-500 border-red-100' : 'bg-white text-primary-500 border-primary-100'}`}>
-                             <Package size={22} />
-                           </div>
-                           <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                               <p className="text-sm font-black text-text-primary tracking-tight">#{order.numeroCommande}</p>
-                               <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest bg-gray-100 px-1.5 py-0.5 rounded-md">
-                                  {order.commandeTapis?.length || 0} tapis
-                               </span>
-                            </div>
-                            <div className="flex items-center gap-2 mt-1.5">
-                              <StatusBadge status={order.status} />
-                              {isOverdue && (
-                                 <div className="flex items-center gap-1">
-                                    <AlertCircle size={10} className="text-red-500" />
-                                    <span className="text-[9px] font-black text-red-600 uppercase tracking-widest">Retard</span>
-                                 </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-1 shrink-0">
-                           <span className="text-[9px] font-black text-text-muted/60 uppercase tracking-widest">
-                              {new Date(order.dateCreation || order.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-                           </span>
-                           <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 text-text-muted">
-                              <ChevronRight size={16} />
-                           </div>
-                        </div>
-                      </div>
-                    );
-                  })}
                 </div>
-  </div>
               </>
             )}
           </div>

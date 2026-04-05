@@ -71,6 +71,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/auth/logout").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/auth/refresh").permitAll()
                                 .requestMatchers("/uploads/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
 
 
                                 .anyRequest().authenticated()
