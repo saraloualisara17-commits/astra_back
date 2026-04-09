@@ -42,15 +42,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
            }
 
 //         check if user is inactive
+//         Note: Querying the DB here ensures absolute immediate suspension blocking (which costs a DB hit but prevents zombie JWTs).
            var userOptional = userRepository.findById(jwt.getUserId());
            if (userOptional.isPresent()) {
                var user = userOptional.get();
                Boolean isActive = user.getIsActive();
                if (isActive != null && !isActive) {
+                   SecurityContextHolder.clearContext();
                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                    response.setContentType("application/json");
                    response.setCharacterEncoding("UTF-8");
-                   response.getWriter().write("{\"error\": \"Compte désactivé\"}");
+                   response.getWriter().write("{\"error\": \"ACCOUNT_DISABLED\", \"message\": \"Votre compte a été désactivé.\"}");
                    return;
                }
                // HIGH-5: cache fetched user in request to avoid a 2nd DB hit in AuthService

@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -138,6 +139,17 @@ public class GlobalExceptionHandler {
         error.put("error", "Conflict");
         error.put("message", "Ce client existe d\u00e9j\u00e0.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    // ✅ Compte desactivé
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<Map<String, Object>> handleDisabledAccount(DisabledException ex) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", LocalDateTime.now());
+        error.put("status", HttpStatus.FORBIDDEN.value());
+        error.put("error", "ACCOUNT_DISABLED");
+        error.put("message", "Votre compte est désactivé. Contactez l'administrateur.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     // ✅ Erreur de stockage de fichier

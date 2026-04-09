@@ -35,13 +35,18 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> Login(@Valid @RequestBody LoginRequest request , HttpServletResponse response){
 
+        var userOptional = userRepository.findByEmail(request.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getIsActive() != null && !user.getIsActive()) {
+                throw new org.springframework.security.authentication.DisabledException("Compte désactivé. Contactez votre administrateur.");
+            }
+        }
+
          authenticationManager.authenticate(
                  new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        if (user.getIsActive() != null && !user.getIsActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        var user = userOptional.orElseThrow();
         var accessTocken = jwtService.generateAccessToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         boolean isProd = "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"));

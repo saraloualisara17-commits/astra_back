@@ -48,6 +48,16 @@ public class CreateCommandeRequest {
         // ✅ NEW: Index of the main image (optional, defaults to 0)
         private Integer mainImageIndex;
 
+        // ✅ NEW: Carpet type reference (optional, for catalogue link)
+        private Long carpetTypeId;
+
+        // ✅ NEW: Dimension-based pricing
+        private java.math.BigDecimal largeur;
+        private java.math.BigDecimal hauteur;
+        private java.math.BigDecimal prixCalcule;
+        private java.math.BigDecimal prixFinal;
+        private com.wash.laundry_app.command.ModeTarification modeTarification;
+
         public String getNom() { return nom; }
         public void setNom(String nom) { this.nom = nom; }
         public String getDescription() { return description; }
@@ -60,5 +70,17 @@ public class CreateCommandeRequest {
         public void setImageUrls(List<String> imageUrls) { this.imageUrls = imageUrls; }
         public Integer getMainImageIndex() { return mainImageIndex; }
         public void setMainImageIndex(Integer mainImageIndex) { this.mainImageIndex = mainImageIndex; }
+        public Long getCarpetTypeId() { return carpetTypeId; }
+        public void setCarpetTypeId(Long carpetTypeId) { this.carpetTypeId = carpetTypeId; }
+        public java.math.BigDecimal getLargeur() { return largeur; }
+        public void setLargeur(java.math.BigDecimal largeur) { this.largeur = largeur; }
+        public java.math.BigDecimal getHauteur() { return hauteur; }
+        public void setHauteur(java.math.BigDecimal hauteur) { this.hauteur = hauteur; }
+        public java.math.BigDecimal getPrixCalcule() { return prixCalcule; }
+        public void setPrixCalcule(java.math.BigDecimal prixCalcule) { this.prixCalcule = prixCalcule; }
+        public java.math.BigDecimal getPrixFinal() { return prixFinal; }
+        public void setPrixFinal(java.math.BigDecimal prixFinal) { this.prixFinal = prixFinal; }
+        public com.wash.laundry_app.command.ModeTarification getModeTarification() { return modeTarification; }
+        public void setModeTarification(com.wash.laundry_app.command.ModeTarification modeTarification) { this.modeTarification = modeTarification; }
     }
 }

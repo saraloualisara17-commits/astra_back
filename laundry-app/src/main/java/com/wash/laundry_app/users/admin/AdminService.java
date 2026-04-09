@@ -227,4 +227,12 @@ public class AdminService {
         var client = clientRepository.findById(id).orElseThrow(()-> new ClientNotFoundException("Le client est introuvable."));
         return commandeRepository.findByClientId(client.getId()).stream().map(commandeMapper::toDto).toList();
     }
+
+
+    public void changePassword(Long id , String newPassword){
+        var user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        var incCodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(incCodedPassword);
+        userRepository.save(user);
+    }
 }

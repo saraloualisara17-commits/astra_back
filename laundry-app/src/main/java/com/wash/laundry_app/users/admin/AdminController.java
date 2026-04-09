@@ -7,8 +7,6 @@ import com.wash.laundry_app.statistiques.DateRangeRequest;
 import com.wash.laundry_app.statistiques.StatisticsDTO;
 import com.wash.laundry_app.statistiques.StatisticsService;
 import com.wash.laundry_app.users.*;
-import com.wash.laundry_app.users.employe.CommandDetails;
-import com.wash.laundry_app.users.employe.CommandDtoEmploye;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -126,21 +124,7 @@ public class AdminController {
         return ResponseEntity.ok(statisticsService.getTodayStatistics());
     }
 
-//    {
-//        "totalCommandesToday": 1,
-//            "revenuesToday": 0,
-//            "commandesEnAttente": 0,
-//            "commandesValidees": 0,
-//            "commandesEnTraitement": 0,
-//            "commandesPretes": 1,
-//            "commandesLivrees": 0,
-//            "commandesPayees": 0,
-//            "totalCommandes": null,
-//            "totalRevenues": null,
-//            "commandesByStatus": null,
-//            "dateDebut": "2026-02-26",
-//            "dateFin": "2026-02-26"
-//    }
+
 
     // Get overall statistics
     @GetMapping("/statistics/overall")
@@ -148,30 +132,7 @@ public class AdminController {
         return ResponseEntity.ok(statisticsService.getOverallStatistics());
     }
 
-//    {
-//        "totalCommandesToday": null,
-//            "revenuesToday": null,
-//            "commandesEnAttente": 0,
-//            "commandesValidees": 0,
-//            "commandesEnTraitement": 0,
-//            "commandesPretes": 2,
-//            "commandesLivrees": 0,
-//            "commandesPayees": 3,
-//            "totalCommandes": 5,
-//            "totalRevenues": 2822.00,
-//            "commandesByStatus": {
-//        "payee": 3,
-//                "en_traitement": 0,
-//                "livree": 0,
-//                "en_attente": 0,
-//                "validee": 0,
-//                "prete": 2,
-//                "annulee": 0
-//    },
-//        "dateDebut": null,
-//            "dateFin": null
-//    }
-//
+
     // Get statistics by date range
     @PostMapping("/statistics/date-range")
     public ResponseEntity<StatisticsDTO> getStatisticsByDateRange(
@@ -180,30 +141,6 @@ public class AdminController {
                 statisticsService.getStatisticsByDateRange(request.getDateDebut(), request.getDateFin())
         );
     }
-
-//    {
-//        "totalCommandesToday": null,
-//            "revenuesToday": null,
-//            "commandesEnAttente": 0,
-//            "commandesValidees": 0,
-//            "commandesEnTraitement": 0,
-//            "commandesPretes": 2,
-//            "commandesLivrees": 0,
-//            "commandesPayees": 3,
-//            "totalCommandes": 5,
-//            "totalRevenues": 2822.00,
-//            "commandesByStatus": {
-//        "payee": 3,
-//                "en_traitement": 0,
-//                "livree": 0,
-//                "en_attente": 0,
-//                "validee": 0,
-//                "prete": 2,
-//                "annulee": 0
-//    },
-//        "dateDebut": "2026-02-20",
-//            "dateFin": "2026-02-26"
-//    }
 
 
     // Get statistics by date range (GET alternative)
@@ -215,29 +152,7 @@ public class AdminController {
     }
 
 
-//    {
-//        "totalCommandesToday": null,
-//            "revenuesToday": null,
-//            "commandesEnAttente": 0,
-//            "commandesValidees": 0,
-//            "commandesEnTraitement": 0,
-//            "commandesPretes": 2,
-//            "commandesLivrees": 0,
-//            "commandesPayees": 3,
-//            "totalCommandes": 5,
-//            "totalRevenues": 2822.00,
-//            "commandesByStatus": {
-//        "payee": 3,
-//                "en_traitement": 0,
-//                "livree": 0,
-//                "en_attente": 0,
-//                "validee": 0,
-//                "prete": 2,
-//                "annulee": 0
-//    },
-//        "dateDebut": "2026-02-20",
-//            "dateFin": "2026-02-26"
-//    }
+
 
     // Get daily statistics for specific date
     @GetMapping("/statistics/daily")
@@ -246,14 +161,6 @@ public class AdminController {
         return ResponseEntity.ok(statisticsService.getDailyStatistics(date));
     }
 
-    //    {
-//        "date": "2026-02-21",
-//            "nombreCommandes": 1,
-//            "revenusTotal": 2822.0,
-//            "nombreTapisTraites": 0
-//    }
-//
-
     // Get last N days statistics
     @GetMapping("/statistics/last-days")
     public ResponseEntity<List<DailyStatisticsDTO>> getLastNDaysStatistics(
@@ -261,25 +168,6 @@ public class AdminController {
         return ResponseEntity.ok(statisticsService.getLastNDaysStatistics(days));
     }
 
-//    [
-//    {
-//        "date": "2026-02-20",
-//            "nombreCommandes": 3,
-//            "revenusTotal": 0,
-//            "nombreTapisTraites": 0
-//    },
-//    {
-//        "date": "2026-02-21",
-//            "nombreCommandes": 1,
-//            "revenusTotal": 2822.0,
-//            "nombreTapisTraites": 0
-//    },
-//    {
-//        "date": "2026-02-22",
-//            "nombreCommandes": 0,
-//            "revenusTotal": 0,
-//            "nombreTapisTraites": 0
-//    }]
 
     // Get statistics by livreur
     @GetMapping("/statistics/livreur/{livreurId}")
@@ -291,23 +179,16 @@ public class AdminController {
                 statisticsService.getStatisticsByLivreur(livreurId, dateDebut, dateFin)
         );
     }
-//
-//    {
-//        "totalCommandesToday": null,
-//            "revenuesToday": null,
-//            "commandesEnAttente": null,
-//            "commandesValidees": null,
-//            "commandesEnTraitement": null,
-//            "commandesPretes": null,
-//            "commandesLivrees": null,
-//            "commandesPayees": null,
-//            "totalCommandes": 3,
-//            "totalRevenues": 1582.00,
-//            "commandesByStatus": null,
-//            "dateDebut": "2026-02-20",
-//            "dateFin": "2026-02-26"
-//    }
-//
+
+    @PutMapping("/change-user-password/{id}")
+    public ResponseEntity<?> changeUserPassword(
+            @PathVariable Long id,
+           @Valid @RequestBody UsersChangePassword password
+    ){
+        adminService.changePassword(id,password.getPassword());
+        return ResponseEntity.ok(Map.of("message","Mot de passe mis à jour avec succès"));
+    }
+
 
 
 }

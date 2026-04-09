@@ -88,9 +88,18 @@ public class CommandeService {
             commandeTapis.setQuantite(tapisItem.getQuantite());
             commandeTapis.setPrixUnitaire(tapisItem.getPrixUnitaire());
 
-            // Calculate subtotal
-            BigDecimal sousTotal = tapisItem.getPrixUnitaire()
-                    .multiply(new BigDecimal(tapisItem.getQuantite()));
+            // Persist dimension-based pricing fields
+            commandeTapis.setLargeur(tapisItem.getLargeur());
+            commandeTapis.setHauteur(tapisItem.getHauteur());
+            commandeTapis.setPrixCalcule(tapisItem.getPrixCalcule());
+            commandeTapis.setPrixFinal(tapisItem.getPrixFinal());
+            commandeTapis.setModeTarification(tapisItem.getModeTarification());
+
+            // Use prixFinal if set (overridden), otherwise fall back to prixUnitaire
+            BigDecimal basePrice = (tapisItem.getPrixFinal() != null)
+                    ? tapisItem.getPrixFinal()
+                    : tapisItem.getPrixUnitaire();
+            BigDecimal sousTotal = basePrice.multiply(new BigDecimal(tapisItem.getQuantite()));
             commandeTapis.setSousTotal(sousTotal);
             commandeTapis.setEtat(TapisEtat.en_attente);
 

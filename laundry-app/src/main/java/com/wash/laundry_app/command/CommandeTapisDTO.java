@@ -21,6 +21,11 @@ public class CommandeTapisDTO {
     private BigDecimal prixUnitaire;
     private BigDecimal sousTotal;
     private TapisEtat etat;
+    private BigDecimal largeur;
+    private BigDecimal hauteur;
+    private BigDecimal prixCalcule;
+    private BigDecimal prixFinal;
+    private ModeTarification modeTarification;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private java.util.List<com.wash.laundry_app.tapis.TapisImageDTO> tapisImages;

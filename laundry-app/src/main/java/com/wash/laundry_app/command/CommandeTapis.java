@@ -41,6 +41,24 @@ public class CommandeTapis {
     @Column(nullable = false)
     private TapisEtat etat = TapisEtat.en_attente;
 
+    // ── Dimension-based pricing fields ──────────────────────────────────────
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal largeur;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal hauteur;
+
+    @Column(name = "prix_calcule", precision = 10, scale = 2)
+    private BigDecimal prixCalcule;
+
+    @Column(name = "prix_final", precision = 10, scale = 2)
+    private BigDecimal prixFinal;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mode_tarification", length = 20)
+    private ModeTarification modeTarification;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -62,6 +80,16 @@ public class CommandeTapis {
     public void setSousTotal(BigDecimal sousTotal) { this.sousTotal = sousTotal; }
     public TapisEtat getEtat() { return etat; }
     public void setEtat(TapisEtat etat) { this.etat = etat; }
+    public BigDecimal getLargeur() { return largeur; }
+    public void setLargeur(BigDecimal largeur) { this.largeur = largeur; }
+    public BigDecimal getHauteur() { return hauteur; }
+    public void setHauteur(BigDecimal hauteur) { this.hauteur = hauteur; }
+    public BigDecimal getPrixCalcule() { return prixCalcule; }
+    public void setPrixCalcule(BigDecimal prixCalcule) { this.prixCalcule = prixCalcule; }
+    public BigDecimal getPrixFinal() { return prixFinal; }
+    public void setPrixFinal(BigDecimal prixFinal) { this.prixFinal = prixFinal; }
+    public ModeTarification getModeTarification() { return modeTarification; }
+    public void setModeTarification(ModeTarification modeTarification) { this.modeTarification = modeTarification; }
 
     @PrePersist
     protected void onCreate() {
@@ -76,10 +104,11 @@ public class CommandeTapis {
         calculateSousTotal();
     }
 
-    // Calculate subtotal
+    // Calculate subtotal — uses prixFinal if set, otherwise falls back to prixUnitaire
     public void calculateSousTotal() {
-        if (prixUnitaire != null && quantite != null) {
-            this.sousTotal = prixUnitaire.multiply(new BigDecimal(quantite));
+        BigDecimal basePrice = (prixFinal != null) ? prixFinal : prixUnitaire;
+        if (basePrice != null && quantite != null) {
+            this.sousTotal = basePrice.multiply(new BigDecimal(quantite));
         }
     }
 }
